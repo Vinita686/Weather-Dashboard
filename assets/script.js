@@ -67,35 +67,38 @@ $('#search-form').on('submit', function(event){
     console.log(response);
 
     //Fetching 5 day forecast data from the api and display
-    
     let date= response.list[0].dt;
-    let dateFirst; 
-    dateFirst = moment.unix(date).format("DD/MM/YYYY");
-    console.log("Today's Date is ", dateFirst);
+    let dateToday= moment.unix(date).format("DD/MM/YYYY");
 
     for (i = 1; i < 40; i++) {
         // let dateFirst;
         let date = response.list[i].dt;
         dateNext = moment.unix(date).format("DD/MM/YYYY");
-        // console.log(dateNext);
-        // console.log(dateFirst);
+
         
-        if(dateFirst == dateNext){
-        //   console.log("hello");
-        } else {
-            console.log("Next Date is ",dateNext);
+
+
+        if(dateToday !== dateNext){
+            dateToday = dateNext;
+            let temp = response.list[i].main.temp;
+            let wind = response.list[i].wind.speed;
+            let humidity = response.list[i].main.humidity;
+            let icon = response.list[i].weather[0].icon;
+            let iconI = $('<img>');
+            iconI.attr('src', 'http://openweathermap.org/img/wn/' + icon + '.png');
+            let textToDisplay = dateToday+ " Temp: " +temp+ " Wind: " +wind+ " Humidity: " + humidity;
+
+            //create cards for each day
+            let card = $('<div>');
+            card.addClass('card col-2 m-1');
+            let cardBody = $('<div>');
+            cardBody.addClass('card-body');
+            cardBody.text(textToDisplay);
+            card.append(cardBody);
+            card.append(iconI)
+            $('#forecast').append(card);
         }
-
     }
-     });
-   });
-
- 
-
+  });
 });
-
-
-
-
-
-
+})

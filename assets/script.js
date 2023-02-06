@@ -2,7 +2,7 @@
 const key = "d19a427e084cc28ea7bccbc2e7e39e2c";
 //fetch today's date
 const today = moment().format("DD/MM/YYYY");
-console.log(today);
+// console.log(today);
 
 //function to get city name and display current forecast
 $('#search-form').on('submit', function(event){
@@ -18,15 +18,13 @@ $('#search-form').on('submit', function(event){
     }).then(function(response){
 
         //display the city name
-        const city = $('<h2>');
-        city.text(response[0].name);
+        const city = $('<h2>').text(response[0].name);
         $('#today').append(city);
         $('#today').addClass('border border-primary');
 
         //display today's date next to the city name
-        const dateToday = $('<span>');
+        const dateToday = $('<span>').text(today);
         dateToday.addClass('append-icon');
-        dateToday.text(today);
         city.append(' (' + today +')');
 
         //build queryUrl to fetch weather forcast using lat long of entered city
@@ -40,18 +38,18 @@ $('#search-form').on('submit', function(event){
     }).then(function(response){
     // console.log(response);
     //display current weather temp
-    const tempDiv = $('<p>');
-    tempDiv.text("Temp: " + response.list[0].main.temp + " °C");
+    const tempDiv = $('<p>').text("Temp: " + response.list[0].main.temp + " °C");
+
     $('#today').append(tempDiv);
 
     //display current weather wind
-    const windDiv = $('<p>');
-    windDiv.text("Wind: " + response.list[0].wind.speed + " KPH");
+    const windDiv = $('<p>').text("Wind: " + response.list[0].wind.speed + " KPH");
+
     $('#today').append(windDiv);
 
     //display current weather humidity
-    const humidityDiv = $('<p>');
-    humidityDiv.text("Humidity: " + response.list[0].main.humidity + " %");
+    const humidityDiv = $('<p>').text("Humidity: " + response.list[0].main.humidity + " %");
+
     $('#today').append(humidityDiv);
 
     //display current weather icon
@@ -61,22 +59,21 @@ $('#search-form').on('submit', function(event){
     city.append(iconEl);
 
     //Display 5 day forecast heading
-    const fiveDayForecast = $('<h2>');
-    fiveDayForecast.text('5-Day Forecast:');
-    $('#forecast').append(fiveDayForecast);
-    console.log(response);
+    const fiveDayForecastHeading = $('<h2>').text('5-Day Forecast:').addClass('col-12');
+    $('#forecast').append(fiveDayForecastHeading);
 
+    //create a div to contain 5 day weather cards
+    let fiveDayEl = $('<div>').addClass('d-flex flex-row justify-content-around');
+    $('.five-cards').append(fiveDayEl);
+    
     //Fetching 5 day forecast data from the api and display
     let date= response.list[0].dt;
     let dateToday= moment.unix(date).format("DD/MM/YYYY");
 
     for (i = 1; i < 40; i++) {
-        // let dateFirst;
+
         let date = response.list[i].dt;
         dateNext = moment.unix(date).format("DD/MM/YYYY");
-
-        
-
 
         if(dateToday !== dateNext){
             dateToday = dateNext;
@@ -84,19 +81,17 @@ $('#search-form').on('submit', function(event){
             let wind = response.list[i].wind.speed;
             let humidity = response.list[i].main.humidity;
             let icon = response.list[i].weather[0].icon;
-            let iconI = $('<img>');
-            iconI.attr('src', 'http://openweathermap.org/img/wn/' + icon + '.png');
-            let textToDisplay = dateToday+ " Temp: " +temp+ " Wind: " +wind+ " Humidity: " + humidity;
-
+            let iconUrl = 'http://openweathermap.org/img/wn/' + icon + '.png';
+    
             //create cards for each day
-            let card = $('<div>');
-            card.addClass('card col-2 m-1');
-            let cardBody = $('<div>');
-            cardBody.addClass('card-body');
-            cardBody.text(textToDisplay);
-            card.append(cardBody);
-            card.append(iconI)
-            $('#forecast').append(card);
+            const cardsDiv = $('<div>').addClass('card col-2 text-white bg-primary');
+            const dateEl = $('<h6>').text(dateToday);
+            const iconEl = $('<img>').attr('src', iconUrl);
+            const tempEl = $('<p>').text('Temp: ' + temp + ' °C');
+            const windEl = $('<p>').text('Wind: ' + wind + ' KPH');
+            const humidityEl = $('<p>').text('Humidity: ' + humidity + '%');
+            cardsDiv.append(dateEl, iconEl, tempEl, windEl, humidityEl);
+            fiveDayEl.append(cardsDiv);
         }
     }
   });

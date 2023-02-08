@@ -15,7 +15,7 @@ $(document).ready(function() {
         cityName = $('#search-input').val().trim();
     
         //build url to get long and lat of the entered city
-        const queryUrlGeo = "http://api.openweathermap.org/geo/1.0/direct?q=" +cityName+ "&appid=" + key;
+        const queryUrlGeo = "https://api.openweathermap.org/geo/1.0/direct?q=" +cityName+ "&appid=" + key;
 
         $.ajax({
             url: queryUrlGeo,
@@ -24,17 +24,15 @@ $(document).ready(function() {
             //display the city name for today's weather
             const city = $('<h2>').text(response[0].name);
             $('#today').append(city);
-            $('#today').addClass('border border-primary');
+            $('#today').addClass('border border-dark');
             
             //display today's date next to the city name
-            const dateToday = $('<span>').text(today);
-            dateToday.addClass('append-icon');
             city.append(' (' + today +')');
 
             //build queryUrl to fetch 5 day weather forcast using lat long of entered city
             const lat = response[0].lat
             const long = response[0].lon
-            const queryUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&" +"lon=" + long + "&units=metric&appid=" + key;
+            const queryUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&" +"lon=" + long + "&units=metric&appid=" + key;
 
             $.ajax({
                 url: queryUrl,
@@ -50,10 +48,9 @@ $(document).ready(function() {
 
                 $('#today').append(tempDiv, windDiv, humidityDiv);
 
-
                 //display current weather icon
                 const icon = response.list[0].weather[0].icon;
-                const iconEl = $('<img>').attr('src', 'http://openweathermap.org/img/wn/' + icon + '.png');
+                const iconEl = $('<img>').attr('src', 'https://openweathermap.org/img/wn/' + icon + '.png');
                 city.append(iconEl);
 
                 //Display 5 day forecast heading
@@ -74,10 +71,10 @@ $(document).ready(function() {
                         let wind = response.list[i].wind.speed;
                         let humidity = response.list[i].main.humidity;
                         let icon = response.list[i].weather[0].icon;
-                        let iconUrl = 'http://openweathermap.org/img/wn/' + icon + '.png';
+                        let iconUrl = 'https://openweathermap.org/img/wn/' + icon + '.png';
                 
                         //create cards for each day
-                        const cardsDiv = $('<div>').addClass('card col-10 col-sm-2 m-2 text-white bg-primary');
+                        const cardsDiv = $('<div>').addClass('card col-10 col-sm-2 m-2 text-white bg-info');
                         const dateEl = $('<h6>').text(dateToday);
                         const iconEl = $('<img>').attr('src', iconUrl);
                         const tempEl = $('<p>').text('Temp: ' + temp + ' °C');
@@ -110,8 +107,13 @@ function displayCityList(){
         historyButton.addClass('btn btn-secondary btn-block');
         $('#history').prepend(historyButton);
     }
+    return;
+}
 
-    }
+
+
+
+
 
 
     

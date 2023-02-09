@@ -1,11 +1,9 @@
 # Weather-Dashboard
----
 
 ## Description : 
 This project is a Weather Dashboard application that will run in the browser and feature dynamically updated HTML and CSS. The application allows the user to get
 current weather conditions of a city and also 5 day's forecast.
 
----
 
 ## Usage : 
 - When a user enters a city name in the search bar, they are presented with current and future conditions for that city and that city is added to the search history.
@@ -22,12 +20,12 @@ current weather conditions of a city and also 5 day's forecast.
 3. The temperature
 4. The humidity
 - When a user clicks on a city in the search history they are again presented with current and future conditions for that city.
----
+
 
 ## Mock-Up :
 The following image shows the screenshot of the application 
-![Screenshot](assets/images/Screenshot.png)
----
+![Screenshot](/assets/images/Screenshot.png)
+
 
 ## Key Features: 
 - Two different endpoints were used to retrieve the required weather data from OpenWeatherMap APIs.
@@ -37,10 +35,10 @@ The following image shows the screenshot of the application
 - New buttons were created for each searched city using jquery.
 - Bootstrap classes were used for styling of new components (e.g. cards for each day of the five day forecast).
 
----
+
 
 ## Link :
 
-Deployed Application URL : 
+Deployed Application URL : https://vinita686.github.io/Weather-Dashboard/
 
 

@@ -3,13 +3,13 @@ $(document).ready(function() {
 //Add eventlistner to the form search to display weather forecast of the searched city
     $('#search-form').on('submit', function(event){
         event.preventDefault();
-        //clear previous searched weather details
-        weatherSearch()
+        weatherSearch();
     });
 });
 
 //Function to display current weather and 5 day forecast of the searched city
 function weatherSearch(city){
+    //Clear previously searched weather detail
     $('#today').empty();
     $('#forecast').empty();
     const key = "d19a427e084cc28ea7bccbc2e7e39e2c";
@@ -18,7 +18,7 @@ function weatherSearch(city){
          
     cityName = city || $('#search-input').val().trim();
     
-    //build url to get long and lat of the entered city
+    //Build url to get long and lat of the entered city
     const queryUrlGeo = "https://api.openweathermap.org/geo/1.0/direct?q=" +cityName+ "&appid=" + key;
 
     $.ajax({
@@ -26,7 +26,7 @@ function weatherSearch(city){
         method: "GET"
     }).then(function(response){
         
-        //display the city name and date for today's weather
+        //Display the city name and date for today's weather
         const city = $('<h2>').text(response[0].name);
         $('#today').append(city);
         $('#today').addClass('border border-dark');
@@ -86,7 +86,6 @@ function weatherSearch(city){
                     cardsDiv.append(dateEl, iconEl, tempEl, windEl, humidityEl);
                     $('#forecast').append(cardsDiv);
                 }
-                
             }
         });
     });
@@ -99,7 +98,7 @@ function displayCityList(){
 
     cityName = $('#search-input').val().trim();
 
-    if(cityName.length) {
+    if(cityName !== '') {
         if(!cityListArray.includes(cityName)){
         cityListArray.push(cityName);
         localStorage.setItem('searchedCity', JSON.stringify(cityListArray));
@@ -108,13 +107,13 @@ function displayCityList(){
         $('#history').empty();
         for(let i = 0; i < cityListArray.length; i++) {
             let historyButton = $('<button>').text(cityListArray[i]);
+            historyButton.addClass('btn btn-secondary btn-block');
+            $('#history').prepend(historyButton);
+
             historyButton.click(function(){
                 
                 weatherSearch(cityListArray[i]);
-            })
-
-            historyButton.addClass('btn btn-secondary btn-block');
-            $('#history').prepend(historyButton);
+            });
         }
         return;
     }
